@@ -1,11 +1,11 @@
-package com.kartius.service.redis;
+package com.kartius.redis;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.kartius.config.ConfigApplication;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,15 +16,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 
 @Configuration
-@ConfigurationProperties("bootstrap.yml")
-public class ConfigApplcation extends CachingConfigurerSupport {
-
-    @Value("${redis.url}")
-    private String redisUrl;
-    @Value("${redis.port}")
-    private String redisPort;
-    @Value("${redis.expiration}")
-    private String redisExpiration;
+@Import(ConfigApplication.class)
+public class ConfigRedis extends CachingConfigurerSupport {
 
 
     @Bean(name = "serviceKeyGenerator")
@@ -33,12 +26,17 @@ public class ConfigApplcation extends CachingConfigurerSupport {
     }
 
     @Bean
+    public ConfigApplication configApplication() {
+        return new ConfigApplication();
+    }
+
+    @Bean
     public JedisConnectionFactory redisConnectionFactory() {
         JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
 
         // Defaults
-        redisConnectionFactory.setHostName(redisUrl);
-        redisConnectionFactory.setPort(Integer.valueOf(redisPort));
+        redisConnectionFactory.setHostName(configApplication().getRedisUrl());
+        redisConnectionFactory.setPort(Integer.valueOf(configApplication().getRedisPort()));
         return redisConnectionFactory;
     }
 
@@ -56,7 +54,7 @@ public class ConfigApplcation extends CachingConfigurerSupport {
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
         // Number of seconds before expiration. Defaults to unlimited (0)
-        cacheManager.setDefaultExpiration(Integer.valueOf(redisExpiration));
+        cacheManager.setDefaultExpiration(Integer.valueOf(configApplication().getRedisExpiration()));
         return cacheManager;
     }
 }

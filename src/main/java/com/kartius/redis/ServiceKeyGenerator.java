@@ -1,4 +1,4 @@
-package com.kartius.service.redis;
+package com.kartius.redis;
 
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.stereotype.Component;
