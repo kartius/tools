@@ -98,3 +98,10 @@ Source:
 Digital Ocean - how to install and configure redis on Ubuntu 16.04
 
 Direct download links
+
+Check redis data:
+1. redis-cli
+2. scan 0
+
+Get data by key
+1. get [key]
