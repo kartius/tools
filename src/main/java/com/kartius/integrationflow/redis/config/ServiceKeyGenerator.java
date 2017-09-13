@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
-
+/*
+Create generation of key, for example by method name and set of attributes and separator '-'
+ */
 @Component
 public class ServiceKeyGenerator implements KeyGenerator {
     @Override
