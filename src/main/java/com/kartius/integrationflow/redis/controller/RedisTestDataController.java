@@ -14,21 +14,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/rest/get")
 @EnableCaching
-public class ComponentController {
-    private static Logger LOG = LoggerFactory.getLogger(ComponentController.class);
+public class RedisTestDataController {
+    private static Logger LOG = LoggerFactory.getLogger(RedisTestDataController.class);
 
-    @Cacheable(keyGenerator = "serviceKeyGenerator",cacheNames = "hybXML")
+    @Cacheable(keyGenerator = "serviceKeyGenerator")
     @RequestMapping(value = "/redisData", method = RequestMethod.GET)
-    public ResponseEntity getSubCategories(@RequestParam String test) {
+    public ResponseEntity getRedisData(@RequestParam String test) {
         List<String> result = Arrays.asList("Test1", "Test2", "Test3");
+        LOG.info("call getRedisData method with attribute - " + test);
         return new ResponseEntity(result, HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/redisData1", method = RequestMethod.GET)
-    @Cacheable(keyGenerator = "serviceKeyGenerator",cacheNames = "hybXML")
-    public List<String> getTest(@RequestParam String test) {
-        List<String> result = Arrays.asList("Test1", "Test2", "Test3");
-        return result;
-    }
-
 }

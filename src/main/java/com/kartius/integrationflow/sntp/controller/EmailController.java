@@ -13,9 +13,8 @@ public class EmailController {
 
     @CrossOrigin
     @RequestMapping(value = "/send", method = RequestMethod.GET)
-    public void createFullReindex(@RequestParam("products") String products) {
-        System.out.println("send");
-        emailService.sendEmail(products);
+    public void createFullReindex() {
+        emailService.sendEmail();
 
     }
 }

@@ -4,17 +4,24 @@ redis:
    port: 6379
    expiration: 300
 
-#sntp ptoperties
-#spring:
-#   mail:
-#      host: smtp.gmail.com
-#      port: 587
-#      username: kevinteamhackathon
-#      password: MaxedaKevin
-#      properties:
-#         mail:
-#            smnp:
-#               auth: true
-#               starttls:
-#                  enable: true
-#                  required: true
+# smptp configuration
+# https://www.google.com/settings/security/lesssecureapps must be turned on
+email:
+   sender: [your email sender]
+   receiver: [your email receiver]
+   subject: [your subject of email]
+   message: [your message]
+
+spring:
+   mail:
+      host: smtp.gmail.com
+      port: 587
+      username: [your login]
+      password: [your password]
+      properties:
+         mail:
+            smtp:
+               auth: true
+               starttls:
+                  enable: true
+                  required: true

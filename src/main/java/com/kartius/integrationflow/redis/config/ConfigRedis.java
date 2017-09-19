@@ -1,5 +1,6 @@
 package com.kartius.integrationflow.redis.config;
 
+import com.kartius.integrationflow.ConfigApplication;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
