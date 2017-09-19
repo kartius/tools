@@ -1,4 +1,4 @@
-package com.kartius.integrationflow.sntp;
+package com.kartius.integrationflow.sntp.config;
 
 import com.kartius.integrationflow.ConfigApplication;
 import org.springframework.beans.factory.annotation.Value;
