@@ -13,7 +13,7 @@ public class EmailController {
 
     @CrossOrigin
     @RequestMapping(value = "/send", method = RequestMethod.GET)
-    public void createFullReindex() {
+    public void sendEmail() {
         emailService.sendEmail();
 
     }
