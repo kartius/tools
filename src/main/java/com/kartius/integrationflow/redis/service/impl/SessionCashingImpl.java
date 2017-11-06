@@ -1,5 +1,6 @@
 package com.kartius.integrationflow.redis.service.impl;
 
+import com.kartius.integrationflow.redis.repository.DataRepository;
 import com.kartius.integrationflow.redis.service.SessionCashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
@@ -9,18 +10,17 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@EnableCaching
 @Service
 public class SessionCashingImpl implements SessionCashing {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private DataRepository dataRepository;
 
     public void save(Object o) {
-        redisTemplate.opsForValue().set( o.toString(), o);
+        dataRepository.save(o);
     }
 
     public Object find(String id) {
-        return redisTemplate.opsForValue().get(id);
+        return dataRepository.find(id);
     }
 }
