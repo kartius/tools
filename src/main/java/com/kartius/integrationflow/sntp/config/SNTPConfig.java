@@ -1,12 +1,9 @@
 package com.kartius.integrationflow.sntp.config;
 
-import com.kartius.integrationflow.ConfigApplication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import(ConfigApplication.class)
 public class SNTPConfig {
 
     //sntp
