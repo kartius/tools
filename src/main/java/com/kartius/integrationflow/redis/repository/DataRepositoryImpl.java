@@ -1,5 +1,6 @@
 package com.kartius.integrationflow.redis.repository;
 
+import com.kartius.integrationflow.redis.model.CustomData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -7,15 +8,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DataRepositoryImpl implements DataRepository {
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, CustomData> redisTemplateSession;
 
     @Override
-    public void save(Object o) {
-        redisTemplate.opsForValue().set( o.toString(), o);
+    public void save(CustomData data) {
+        redisTemplateSession.opsForValue().set( data.getId(), data);
     }
-
     @Override
-    public Object find(String id) {
-        return redisTemplate.opsForValue().get(id);
+    public CustomData find(String id) {
+        return redisTemplateSession.opsForValue().get(id);
     }
 }

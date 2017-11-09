@@ -1,6 +1,7 @@
 package com.kartius.integrationflow.redis.config;
 
 import com.kartius.integrationflow.ConfigApplication;
+import com.kartius.integrationflow.redis.model.CustomData;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
@@ -41,9 +42,19 @@ public class ConfigRedis extends CachingConfigurerSupport {
     }
 
     @Bean
-    @Primary
+//    @Primary
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory cf) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setConnectionFactory(cf);
+        return redisTemplate;
+    }
+
+    @Bean(name = "redisTemplateSession")
+//    @Primary
+    public RedisTemplate<String, CustomData> redisTemplateSession(RedisConnectionFactory cf) {
+        RedisTemplate<String, CustomData> redisTemplate = new RedisTemplate<String, CustomData>();
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setConnectionFactory(cf);

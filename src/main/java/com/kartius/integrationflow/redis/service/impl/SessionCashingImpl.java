@@ -1,5 +1,6 @@
 package com.kartius.integrationflow.redis.service.impl;
 
+import com.kartius.integrationflow.redis.model.CustomData;
 import com.kartius.integrationflow.redis.repository.DataRepository;
 import com.kartius.integrationflow.redis.service.SessionCashing;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ public class SessionCashingImpl implements SessionCashing {
     @Autowired
     private DataRepository dataRepository;
 
-    public void save(Object o) {
-        dataRepository.save(o);
+    public void save(CustomData data) {
+        dataRepository.save(data);
     }
 
-    public Object find(String id) {
+    public CustomData find(String id) {
         return dataRepository.find(id);
     }
 }

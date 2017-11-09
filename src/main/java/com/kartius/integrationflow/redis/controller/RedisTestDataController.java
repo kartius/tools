@@ -1,5 +1,6 @@
 package com.kartius.integrationflow.redis.controller;
 
+import com.kartius.integrationflow.redis.model.CustomData;
 import com.kartius.integrationflow.redis.service.ResponseCashing;
 import com.kartius.integrationflow.redis.service.SessionCashing;
 import org.slf4j.Logger;
@@ -34,9 +35,9 @@ public class RedisTestDataController {
         return new ResponseEntity(sessionCashing.find(session), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/create/redisSession", method = RequestMethod.GET)
-    public void createRedisSession(@RequestParam Object o) {
-        sessionCashing.save(o);
+    @RequestMapping(value = "/create/redisSession", method = RequestMethod.POST)
+    public void createRedisSession(CustomData data) {
+        sessionCashing.save(data);
     }
 
 
