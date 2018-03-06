@@ -14,4 +14,9 @@ public class Sender {
         LOGGER.info("sending message='{}' to destination='{}'", message, destination);
         jmsTemplate.convertAndSend(destination, message);
     }
+
+    public void sendObject(String destination, Object message) {
+        LOGGER.info("sending message='{}' to destination='{}'", message, destination);
+        jmsTemplate.convertAndSend(destination, message);
+    }
 }

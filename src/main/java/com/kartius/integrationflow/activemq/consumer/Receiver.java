@@ -1,5 +1,6 @@
 package com.kartius.integrationflow.activemq.consumer;
 
+import com.kartius.integrationflow.activemq.data.CustomData;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.concurrent.CountDownLatch;
 
@@ -19,23 +22,34 @@ public class Receiver {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    private CountDownLatch latch = new CountDownLatch(1);
+//    private CountDownLatch latch = new CountDownLatch(1);
+//
+//    public CountDownLatch getLatch() {
+//        return latch;
+//    }
 
-    public CountDownLatch getLatch() {
-        return latch;
-    }
-
-    @JmsListener(destination = "tcp://localhost:61616")
-    public String receive(String destination) {
-        latch.countDown();
+     @JmsListener(destination = "tcp://localhost:61616")
+    public Message receive(String destination) {
+//        latch.countDown();
         String text = null;
         Message receive1 = jmsTemplate.receive(destination);
-        ActiveMQTextMessage receive = (ActiveMQTextMessage) jmsTemplate.receive(destination);
+//        ActiveMQTextMessage receive = (ActiveMQTextMessage) jmsTemplate.receive(destination);
+//        try {
+//            text = receive.getText();
+//        } catch (JMSException e) {
+//            e.printStackTrace();
+//        }
+        return receive1;
+    }
+
+    public CustomData receiveObject(String destination) {
+        ObjectMessage receive = (ObjectMessage) jmsTemplate.receive(destination);
+        CustomData object = null;
         try {
-            text = receive.getText();
+            object = (CustomData) receive.getObject();
         } catch (JMSException e) {
             e.printStackTrace();
         }
-        return text;
+        return object;
     }
 }

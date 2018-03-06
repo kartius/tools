@@ -18,7 +18,7 @@ public class SenderConfiguration {
     public ActiveMQConnectionFactory activeMQConnectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
         activeMQConnectionFactory.setBrokerURL("tcp://localhost:61616");
-
+        activeMQConnectionFactory.setTrustAllPackages(true);
         return activeMQConnectionFactory;
     }
 

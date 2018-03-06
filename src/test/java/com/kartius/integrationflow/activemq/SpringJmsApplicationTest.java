@@ -1,6 +1,7 @@
 package com.kartius.integrationflow.activemq;
 
 import com.kartius.integrationflow.activemq.consumer.Receiver;
+import com.kartius.integrationflow.activemq.data.CustomData;
 import com.kartius.integrationflow.activemq.producer.Sender;
 import org.apache.activemq.junit.EmbeddedActiveMQBroker;
 import org.junit.AfterClass;
@@ -43,13 +44,32 @@ public class SpringJmsApplicationTest {
     private Receiver receiver;
 
     @Test
-    public void testReceive() throws Exception {
-        sender.send("helloworld.q", "Hello Spring JMS ActiveMQ!");
+    public void testSend() throws Exception {
+        CustomData customData = new CustomData();
+        customData.setCode("CodeTest");
+        customData.setName("NameTest");
 
-        receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+        CustomData customData1 = new CustomData();
+        customData1.setCode("CodeTest1");
+        customData1.setName("NameTest1");
+
+        CustomData customData2 = new CustomData();
+        customData2.setCode("CodeTest2");
+        customData2.setName("NameTest2");
+
+        sender.sendObject("test.q", customData);
+        Thread.sleep(1000);
+        sender.sendObject("test.q", customData1);
+        Thread.sleep(1000);
+        sender.sendObject("test.q", customData2);
+    }
+
+    @Test
+    public void testReceive() throws Exception {
         System.out.println("----------------------------------");
-        System.out.println(receiver.receive("helloworld.q"));
+        CustomData customDataResult = receiver.receiveObject("test.q");
+        System.out.println(customDataResult.getName());
+        System.out.println(customDataResult.getCode());
         System.out.println("----------------------------------");
-//        assertThat(receiver.getLatch().getCount()).isEqualTo(0);
     }
 }
