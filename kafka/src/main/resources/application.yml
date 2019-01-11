@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          contentType: application/json
+        test-events-out:
+          destination: data-events
+        test-events-in:
+          destination: data-events
+      kafka:
+          binder:
+              brokers: localhost:9092
+      default-binder: kafka
