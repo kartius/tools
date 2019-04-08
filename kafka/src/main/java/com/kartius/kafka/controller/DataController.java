@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/rest")
@@ -25,10 +27,15 @@ public class DataController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping("/count/{id}")
-//    public ResponseEntity<Long> getEventsCount(@PathVariable String id) {
-//        return new ResponseEntity<>(storeService.getCountEvents(id),HttpStatus.OK);
-//    }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getEventsCount() {
+        return new ResponseEntity<>(storeService.getCountEvents(),HttpStatus.OK);
+    }
+
+    @GetMapping("/events")
+    public ResponseEntity<List<DataEvent>> getEvents() {
+        return new ResponseEntity<>(storeService.getAllEvents(),HttpStatus.OK);
+    }
 
     @GetMapping("/event/{id}")
     public ResponseEntity<DataEvent> getEvent(@PathVariable String id) {

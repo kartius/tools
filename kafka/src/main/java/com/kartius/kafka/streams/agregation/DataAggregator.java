@@ -2,11 +2,15 @@ package com.kartius.kafka.streams.agregation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kartius.kafka.data.DataEvent;
+import com.kartius.kafka.streams.QueryableStoreFetcher;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
+import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.StreamsBuilderFactoryBean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -29,12 +33,12 @@ public class DataAggregator {
         kStreamData = kafkaStreamsBean.getObject().stream("data-events");
 
         simpleAggregationByKey(kStreamData);
-//        countAgregationByTime(kStreamData);
+        countAgregationByTime(kStreamData);
         kafkaStreamsBean.start();
 
     }
 
-    private void simpleAggregationByKey(KStream<String, String> kStreamData) throws Exception {
+    public void simpleAggregationByKey(KStream<String, String> kStreamData) {
         kTableData = kStreamData.selectKey((k, v) -> {
             DataEvent event;
             String id = null;
@@ -49,21 +53,19 @@ public class DataAggregator {
                 reduce((aggValue, newValue) -> aggValue, Materialized.as("dataStore"));
     }
 
-//    private void countAgregationByTime(KStream<String, String> kStreamData) throws Exception {
-//        KTable<Windowed<String>, Long> kTableResult = kStreamData.selectKey((k, v) -> {
-//            DataEvent event;
-//            String id = null;
-//            try {
-//                event = objectMapper.readValue(v, DataEvent.class);
-//                id = event.getId();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return id;
-//        }).groupByKey()
-//                .windowedBy(TimeWindows.of(50000))
-//                .count(Materialized.as("dataStore-1"));
-//        kStreamData.print();
-//    }
+    public void countAgregationByTime(KStream<String, String> kStreamData) {
+        kTableData = kStreamData.selectKey((k, v) -> {
+            DataEvent event;
+            String id = null;
+            try {
+                event = objectMapper.readValue(v, DataEvent.class);
+                id = event.getId();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return id;
+        }).groupByKey().
+                reduce((aggValue, newValue) -> aggValue, Materialized.as("dataStore-1"));
+    }
 
 }
