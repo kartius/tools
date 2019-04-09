@@ -1,9 +1,11 @@
-package com.kartius.websocket;
+package com.kartius;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class WebsocketApplication {
 
     public static void main(String[] args) {

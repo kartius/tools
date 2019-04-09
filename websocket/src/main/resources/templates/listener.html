@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.getHeaderName()}"/>
+    <meta name="_base_url" th:content="@{'/'}"/>
+    <title>Hello WebSocket</title>
+    <link th:href="@{'/webjars/bootstrap/4.1.1/css/bootstrap.min.css'}" rel="stylesheet">
+    <link th:href="@{'/main.css'}" rel="stylesheet">
+    <script th:src="@{'/webjars/jquery/3.3.1-1/jquery.min.js'}"></script>
+    <script th:src="@{'/webjars/stomp-websocket/2.3.1/stomp.js'}"></script>
+    <script th:src="@{'/app.js'}"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="connect">WebSocket connection:</label>
+                </div>
+                <div class="btn-toolbar">
+                    <button id="connect" class="btn btn-default mb-2" type="submit">Connect</button>
+                    <button id="disconnect" class="btn btn-default mb-2" type="submit" disabled="disabled">Disconnect
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="btn-toolbar">
+                    <button id="eventOne" class="btn btn-default" type="submit">Get events with type one</button>
+                    <button id="eventTwo" class="btn btn-default" type="submit">Get events with type two</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="events_one_table" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Events with type one</th>
+                    </tr>
+                    </thead>
+                    <tbody id="events_one">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table id="events_two_table" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Events with type two</th>
+                    </tr>
+                    </thead>
+                    <tbody id="events_two">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        connect();
+    });
+</script>
+</html>
