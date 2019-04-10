@@ -31,7 +31,7 @@ public class FileWriterIntegrationConfig {
     @ServiceActivator(inputChannel = "fileWriterChannel")
     public FileWritingMessageHandler fileWriter() {
         FileWritingMessageHandler handler =
-                new FileWritingMessageHandler(new File("/tmp/sia5/files/1"));
+                new FileWritingMessageHandler(new File("tmp/sia0/"));
         handler.setExpectReply(false);
         handler.setFileExistsMode(FileExistsMode.APPEND);
         handler.setAppendNewLine(true);
@@ -52,12 +52,5 @@ public class FileWriterIntegrationConfig {
     public MessageChannel orderChannel() {
         return new PublishSubscribeChannel();
     }
-
-    @Filter(inputChannel = "numberChannel",
-            outputChannel = "evenNumberChannel")
-    public boolean evenNumberFilter(Integer number) {
-        return number % 2 == 0;
-    }
-
 
 }
