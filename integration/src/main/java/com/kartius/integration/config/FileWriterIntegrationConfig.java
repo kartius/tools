@@ -1,11 +1,9 @@
 package com.kartius.integration.config;
 
 
-import com.kartius.integration.gateway.FileWriterGateway;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.annotation.Filter;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
@@ -14,10 +12,12 @@ import org.springframework.integration.file.FileWritingMessageHandler;
 import org.springframework.integration.file.support.FileExistsMode;
 import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHandler;
 
 import java.io.File;
 
 @Configuration
+@Slf4j
 public class FileWriterIntegrationConfig {
 
     @Bean
@@ -25,6 +25,14 @@ public class FileWriterIntegrationConfig {
             outputChannel = "fileWriterChannel")
     public GenericTransformer<String, String> upperCaseTransformer() {
         return text -> text.toUpperCase();
+    }
+
+    @Bean
+    @ServiceActivator(inputChannel = "errorChannel")
+    public MessageHandler errorHandler() {
+        return message -> {
+         log.error(message.toString());
+        };
     }
 
     @Bean

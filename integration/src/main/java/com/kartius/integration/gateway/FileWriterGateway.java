@@ -7,7 +7,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 @Component
-@MessagingGateway(defaultRequestChannel = "textInChannel")
+@MessagingGateway(defaultRequestChannel = "textInChannel", errorChannel = "errorChannel")
 public interface FileWriterGateway {
 
     void writeToFile(@Header(FileHeaders.FILENAME) String filename, String data);
