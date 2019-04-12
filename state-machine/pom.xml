@@ -5,6 +5,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>builder</module>
+        <module>features</module>
+        <module>factory</module>
+        <module>persister</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
