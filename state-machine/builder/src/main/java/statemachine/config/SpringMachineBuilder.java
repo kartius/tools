@@ -18,23 +18,33 @@ public class SpringMachineBuilder {
                 .autoStartup(true)
                 .listener(listener());
         builder.configureStates().withStates()
-                .initial(States.S1)
-                .state(States.S1)
-                .state(States.S2)
-                .state(States.S3);
+                .initial(States.SUBMITTED)
+                .state(States.PAID)
+                .end(States.CANCELLED)
+                .end(States.FULFILLED);
         builder.configureTransitions()
-                .withExternal()
-                .source(States.S1).target(States.S2).event(Events.E1);
+                .withExternal().source(States.SUBMITTED).target(States.PAID).event(Events.PAY)
+                .and()
+                .withExternal().source(States.PAID).target(States.FULFILLED).event(Events.FULFILL)
+                .and()
+                .withExternal().source(States.SUBMITTED).target(States.CANCELLED).event(Events.CANCEL)
+                .and()
+                .withExternal().source(States.PAID).target(States.CANCELLED).event(Events.CANCEL);
         StateMachine<States, Events> build = builder.build();
         stateMachine = build;
     }
 
     public enum States {
-        S1, S2, S3;
+        SUBMITTED,
+        PAID,
+        FULFILLED,
+        CANCELLED;
     }
 
     public enum Events {
-        E1, E2;
+        FULFILL,
+        PAY,
+        CANCEL;
     }
 
     public StateMachine getStateMachine() {
