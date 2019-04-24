@@ -1,4 +1,4 @@
-In order to cooperate with Vault (Sevrets manager server)
+In order to cooperate with Vault (Secrets manager server)
 Link to download - https://www.vaultproject.io/downloads.html
 
 Command to start:
