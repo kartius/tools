@@ -13,6 +13,7 @@ spring:
         vault:
           host: localhost
           port: 8200
+#          http only for dev environment
           scheme: http
           order: 1
       token: roottoken
