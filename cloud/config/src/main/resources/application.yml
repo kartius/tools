@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active:
+      - vault
+      - git
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/kartius/tools
+          search-paths: cloud/remote-configuration
+          order: 2
+        vault:
+          host: localhost
+          port: 8200
+          scheme: http
+          order: 1
+      token: roottoken
+server:
+  port: 8888
