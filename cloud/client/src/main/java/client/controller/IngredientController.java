@@ -1,5 +1,7 @@
 package client.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import static java.lang.Thread.sleep;
 
 @RestController
 public class IngredientController {
@@ -39,5 +43,22 @@ public class IngredientController {
                 .uri("http://ingredient-service/getText")
                 .retrieve().bodyToMono(String.class);
         return stringMono;
+    }
+
+    @GetMapping("/makeHystrixTest")
+    @HystrixCommand(
+            fallbackMethod = "makeDefaultTest",
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500")
+            })
+    public ResponseEntity<String> makeHystrixTest() throws InterruptedException {
+        sleep(1000);
+        String forObject = restTemplate.getForObject("http://ingredient-service/getText", String.class);
+        return new ResponseEntity<String>(forObject, HttpStatus.OK);
+    }
+
+    @GetMapping("/makeDefaultTest")
+    public ResponseEntity<String> makeDefaultTest() {
+        return new ResponseEntity<String>("Hystrix default response", HttpStatus.OK);
     }
 }
