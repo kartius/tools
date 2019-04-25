@@ -57,6 +57,17 @@ public class IngredientController {
         return new ResponseEntity<String>(forObject, HttpStatus.OK);
     }
 
+    @GetMapping("/makeHystrixTestForTurbine")
+    @HystrixCommand(
+            fallbackMethod = "makeDefaultTest",
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500")
+            })
+    public ResponseEntity<String> makeHystrixTestForTurbine() throws InterruptedException {
+        String forObject = restTemplate.getForObject("http://ingredient-service/getText", String.class);
+        return new ResponseEntity<String>(forObject, HttpStatus.OK);
+    }
+
     @GetMapping("/makeDefaultTest")
     public ResponseEntity<String> makeDefaultTest() {
         return new ResponseEntity<String>("Hystrix default response", HttpStatus.OK);
