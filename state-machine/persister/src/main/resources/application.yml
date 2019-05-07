@@ -1,0 +1,5 @@
+#redis properties
+redis:
+  url: localhost
+  port: 6379
+  expiration: 300
