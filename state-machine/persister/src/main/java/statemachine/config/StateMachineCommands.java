@@ -27,7 +27,7 @@ public class StateMachineCommands {
 
     @PostConstruct
     public void init() {
-        String machineId = "1";
+        String machineId = "123";
         stateMachine = factory.getStateMachine(machineId);
         restore(machineId);
     }
