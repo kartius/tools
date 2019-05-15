@@ -61,7 +61,7 @@ public class SimpleSpringMachineFactory extends StateMachineConfigurerAdapter<Si
         return new StateMachineListenerAdapter<States, Events>() {
             @Override
             public void stateChanged(State<States, Events> from, State<States, Events> to) {
-                System.out.println("State was changed from " + (from != null ? from.getId() : from) + " to " + to.getId());
+                log.info(String.format("State was changed from %s to %s", (from != null ? from.getId() : from), to.getId()));
             }
         };
     }

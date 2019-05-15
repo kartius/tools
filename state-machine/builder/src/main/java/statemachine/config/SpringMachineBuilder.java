@@ -1,11 +1,13 @@
 package statemachine.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineBuilder;
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
 
+@Slf4j
 public class SpringMachineBuilder {
 
     private StateMachine stateMachine;
@@ -55,7 +57,7 @@ public class SpringMachineBuilder {
         return new StateMachineListenerAdapter<States, Events>() {
             @Override
             public void stateChanged(State<States, Events> from, State<States, Events> to) {
-                System.out.println("State was changed from " + (from != null ? from.getId() : from) + " to " + to.getId());
+                log.info(String.format("State was changed from %s to %s", (from != null ? from.getId() : from), to.getId()));
             }
         };
     }
