@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.action.Action;
 import org.springframework.statemachine.config.StateMachineBuilder;
-import org.springframework.statemachine.config.configurers.StateConfigurer;
 import org.springframework.statemachine.guard.Guard;
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
@@ -23,18 +22,18 @@ public class SpringMachineBuilder {
                 .autoStartup(true)
                 .listener(listener());
         builder.configureStates().withStates()
-                .initial(States.SUBMITTED)
+                .initial(States.SUBMITTED, initAction())
                 .state(States.PAID)
                 .end(States.CANCELLED)
                 .end(States.FULFILLED);
         builder.configureTransitions()
-                .withExternal().source(States.SUBMITTED).target(States.PAID).event(Events.PAY)
+                .withExternal().source(States.SUBMITTED).target(States.PAID).event(Events.PAY).action(transitionAtion())
                 .and()
                 .withExternal().source(States.PAID).target(States.FULFILLED).event(Events.FULFILL)
                 .and()
                 .withExternal().source(States.SUBMITTED).target(States.CANCELLED).event(Events.CANCEL)
                 .and()
-                .withExternal().source(States.PAID).target(States.CANCELLED).event(Events.CANCEL);
+                .withExternal().source(States.PAID).target(States.CANCELLED).event(Events.CANCEL).guard(demoGuard());
         StateMachine<States, Events> build = builder.build();
         stateMachine = build;
     }
@@ -77,9 +76,9 @@ public class SpringMachineBuilder {
         };
     }
 
-    private Guard<States, Events> guard() {
+    private Guard<States, Events> demoGuard() {
         return context -> {
-            return true;
+            return false;
         };
     }
 }
