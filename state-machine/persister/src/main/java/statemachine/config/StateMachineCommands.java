@@ -12,6 +12,7 @@ import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 
 @ShellComponent
 @Component
@@ -30,6 +31,7 @@ public class StateMachineCommands {
         String machineId = "123";
         stateMachine = factory.getStateMachine(machineId);
         restore(machineId);
+        log.info(String.format("Extended state variables - %s",stateMachine.getExtendedState().getVariables()));
     }
 
     private void restore(String machineId) {
@@ -45,6 +47,7 @@ public class StateMachineCommands {
 
     @ShellMethod(value = "event", key = "sendEvent")
     public void sendEvent(SimpleSpringMachineFactory.Events event) {
+        stateMachine.getExtendedState().getVariables().putIfAbsent(event.name(), Instant.now().toString());
         stateMachine.sendEvent(event);
     }
 
