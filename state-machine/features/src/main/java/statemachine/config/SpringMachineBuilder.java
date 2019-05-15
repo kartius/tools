@@ -72,7 +72,6 @@ public class SpringMachineBuilder {
 
     private Action<States, Events> transitionAtion() {
         return context -> {
-
             log.info("---Action: Perform action from transition");
         };
     }
